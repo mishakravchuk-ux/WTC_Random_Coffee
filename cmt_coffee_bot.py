@@ -2,7 +2,7 @@ import asyncio
 import json
 import os
 import logging
-from datetime import datetime
+from datetime import datetime, time
 from random import shuffle
 
 from aiogram import Bot, Dispatcher
@@ -223,15 +223,13 @@ async def form_pairs():
 
 async def scheduler():
     """Каждую минуту проверяет, пора ли формировать пары."""
-    from datetime import time
-
-    PAIRS_TIME = time(17, 0)  # 17:00
+    pairs_time = time(17, 0)  # 17:00
     while True:
         now = datetime.now()
         if (
             now.weekday() == 6  # воскресенье
-            and now.hour == PAIRS_TIME.hour
-            and now.minute == PAIRS_TIME.minute
+            and now.hour == pairs_time.hour
+            and now.minute == pairs_time.minute
         ):
             await form_pairs()
             await asyncio.sleep(3600)
